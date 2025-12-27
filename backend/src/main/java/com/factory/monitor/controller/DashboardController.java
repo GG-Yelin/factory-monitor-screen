@@ -93,6 +93,24 @@ public class DashboardController {
     }
 
     /**
+     * 获取所有数据点（用于查看云平台有哪些数据点）
+     */
+    @GetMapping("/datapoints")
+    public ResponseEntity<List<DataPoint>> getAllDataPoints() {
+        List<ProjectInfo> projects = xinjeCloudService.getProjectList();
+        List<DataPoint> allDataPoints = new java.util.ArrayList<>();
+        for (ProjectInfo project : projects) {
+            // 获取加工数据
+            List<DataPoint> itemData = xinjeCloudService.getItemData(project.getItemId());
+            allDataPoints.addAll(itemData);
+            // 获取基础数据
+            List<DataPoint> baseData = xinjeCloudService.getBaseData(project.getItemId());
+            allDataPoints.addAll(baseData);
+        }
+        return ResponseEntity.ok(allDataPoints);
+    }
+
+    /**
      * 健康检查
      */
     @GetMapping("/health")

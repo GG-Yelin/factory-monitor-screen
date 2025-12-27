@@ -61,14 +61,15 @@ const getStatusText = (status: number) => {
 
 <style scoped lang="scss">
 .device-list-card {
-  grid-column: span 2;
   display: flex;
   flex-direction: column;
+  min-height: 0;
 }
 
 .table-wrapper {
   flex: 1;
   overflow-y: auto;
-  margin-top: 10px;
+  overflow-x: hidden;
+  min-height: 0;
 }
 </style>

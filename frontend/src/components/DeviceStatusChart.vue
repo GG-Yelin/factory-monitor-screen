@@ -51,14 +51,14 @@ const initChart = () => {
           },
           rich: {
             value: {
-              fontSize: 28,
+              fontSize: 22,
               fontWeight: 'bold',
               color: '#fff'
             },
             label: {
-              fontSize: 14,
+              fontSize: 11,
               color: 'rgba(255, 255, 255, 0.7)',
-              padding: [5, 0, 0, 0]
+              padding: [3, 0, 0, 0]
             }
           }
         },
@@ -125,9 +125,15 @@ watch(() => [props.online, props.offline, props.alarm], updateChart)
 </script>
 
 <style scoped lang="scss">
+.chart-card {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
 .chart-container {
+  flex: 1;
   width: 100%;
-  height: calc(100% - 40px);
-  min-height: 200px;
+  min-height: 0;
 }
 </style>

@@ -18,6 +18,16 @@
       "sourceType": "com.factory.monitor.config.XinjeConfig"
     },
     {
+      "name": "xinje.cloud.plan-data-point-names",
+      "type": "java.lang.String",
+      "sourceType": "com.factory.monitor.config.XinjeConfig"
+    },
+    {
+      "name": "xinje.cloud.production-data-point-names",
+      "type": "java.lang.String",
+      "sourceType": "com.factory.monitor.config.XinjeConfig"
+    },
+    {
       "name": "xinje.cloud.username",
       "type": "java.lang.String",
       "sourceType": "com.factory.monitor.config.XinjeConfig"

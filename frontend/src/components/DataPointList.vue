@@ -30,9 +30,9 @@ const props = defineProps<{
   dataPoints: DataPoint[]
 }>()
 
-// 只显示前12个数据点
+// 只显示前8个数据点
 const displayPoints = computed(() => {
-  return props.dataPoints.slice(0, 12)
+  return props.dataPoints.slice(0, 8)
 })
 
 const formatValue = (point: DataPoint) => {
@@ -48,27 +48,28 @@ const formatValue = (point: DataPoint) => {
 
 <style scoped lang="scss">
 .datapoint-list-card {
-  grid-column: span 2;
   display: flex;
   flex-direction: column;
+  min-height: 0;
 }
 
 .datapoint-wrapper {
   flex: 1;
   overflow-y: auto;
+  min-height: 0;
 }
 
 .datapoint-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 15px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
 }
 
 .datapoint-item {
   background: rgba(0, 100, 200, 0.1);
   border: 1px solid rgba(0, 150, 255, 0.2);
-  border-radius: 8px;
-  padding: 15px;
+  border-radius: 4px;
+  padding: 8px;
   text-align: center;
   transition: all 0.3s;
 
@@ -79,19 +80,19 @@ const formatValue = (point: DataPoint) => {
 }
 
 .point-name {
-  font-size: 12px;
+  font-size: 10px;
   color: rgba(255, 255, 255, 0.6);
-  margin-bottom: 8px;
+  margin-bottom: 4px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 .point-value {
-  font-size: 24px;
+  font-size: 16px;
   font-weight: bold;
   color: #00d4ff;
-  margin-bottom: 8px;
+  margin-bottom: 4px;
 
   &.bool {
     color: #00ff88;
@@ -99,7 +100,7 @@ const formatValue = (point: DataPoint) => {
 }
 
 .point-device {
-  font-size: 11px;
+  font-size: 9px;
   color: rgba(255, 255, 255, 0.4);
   white-space: nowrap;
   overflow: hidden;
@@ -107,9 +108,10 @@ const formatValue = (point: DataPoint) => {
 }
 
 .no-data {
-  grid-column: span 4;
+  grid-column: span 2;
   text-align: center;
-  padding: 40px;
+  padding: 20px;
   color: rgba(255, 255, 255, 0.5);
+  font-size: 12px;
 }
 </style>

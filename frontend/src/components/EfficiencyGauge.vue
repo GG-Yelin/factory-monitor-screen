@@ -47,14 +47,14 @@ const initChart = () => {
         },
         progress: {
           show: true,
-          width: 20
+          width: 15
         },
         pointer: {
           show: false
         },
         axisLine: {
           lineStyle: {
-            width: 20,
+            width: 15,
             color: [[1, 'rgba(255, 255, 255, 0.1)']]
           }
         },
@@ -75,7 +75,7 @@ const initChart = () => {
         },
         detail: {
           valueAnimation: true,
-          fontSize: 32,
+          fontSize: 24,
           fontWeight: 'bold',
           offsetCenter: [0, 0],
           formatter: '{value}%',
@@ -119,12 +119,14 @@ watch(() => props.value, updateChart)
 
 <style scoped lang="scss">
 .gauge-card {
-  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
 }
 
 .chart-container {
+  flex: 1;
   width: 100%;
-  height: calc(100% - 40px);
-  min-height: 150px;
+  min-height: 0;
 }
 </style>

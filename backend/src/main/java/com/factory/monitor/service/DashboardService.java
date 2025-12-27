@@ -1,5 +1,6 @@
 package com.factory.monitor.service;
 
+import com.factory.monitor.config.XinjeConfig;
 import com.factory.monitor.model.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -14,13 +15,15 @@ import java.util.concurrent.ConcurrentHashMap;
 public class DashboardService {
 
     private final XinjeCloudService xinjeCloudService;
+    private final XinjeConfig xinjeConfig;
 
     // 数据缓存
     private DashboardData cachedData;
     private final Map<String, Integer> productionHistory = new ConcurrentHashMap<>();
 
-    public DashboardService(XinjeCloudService xinjeCloudService) {
+    public DashboardService(XinjeCloudService xinjeCloudService, XinjeConfig xinjeConfig) {
         this.xinjeCloudService = xinjeCloudService;
+        this.xinjeConfig = xinjeConfig;
     }
 
     /**
@@ -30,6 +33,8 @@ public class DashboardService {
         try {
             // 获取项目列表
             List<ProjectInfo> projects = xinjeCloudService.getProjectList();
+            log.info("Found {} projects: {}", projects.size(),
+                    projects.stream().map(p -> p.getItemId() + "(" + p.getItemName() + ")").collect(java.util.stream.Collectors.joining(", ")));
 
             // 使用新接口获取所有设备（包含真实在线状态）
             List<DeviceInfo> allDevices = xinjeCloudService.getAllDevicesWithStatus();
@@ -41,9 +46,13 @@ public class DashboardService {
                     .collect(java.util.stream.Collectors.groupingBy(DeviceInfo::getItemId));
 
             for (ProjectInfo project : projects) {
-                // 获取实时数据
-                List<DataPoint> dataPoints = xinjeCloudService.getItemData(project.getItemId());
-                allDataPoints.addAll(dataPoints);
+                // 获取加工数据
+                List<DataPoint> itemData = xinjeCloudService.getItemData(project.getItemId());
+                allDataPoints.addAll(itemData);
+
+                // 获取基础数据（生产计划数可能在这里）
+                List<DataPoint> baseData = xinjeCloudService.getBaseData(project.getItemId());
+                allDataPoints.addAll(baseData);
 
                 // 更新项目的设备数量（从设备列表中统计）
                 List<DeviceInfo> projectDevices = devicesByProject.getOrDefault(project.getItemId(), new ArrayList<>());
@@ -57,17 +66,28 @@ public class DashboardService {
             int offlineDevices = (int) allDevices.stream().filter(d -> d.getStatus() == 0).count();
             int alarmDevices = (int) allDevices.stream().filter(d -> d.getStatus() == 2).count();
 
-            // 从数据点中提取生产数据（根据实际数据点名称调整）
-            int todayProduction = extractProductionCount(allDataPoints, "production", "count", "产量");
-            int planProduction = extractPlanCount(allDataPoints, "plan", "计划");
+            // 从数据点中提取生产数据（使用配置的数据点名称）
+            String productionConfig = xinjeConfig.getProductionDataPointNames();
+            String planConfig = xinjeConfig.getPlanDataPointNames();
 
-            // 如果没有从接口获取到数据，使用模拟数据
-            if (todayProduction == 0) {
-                todayProduction = generateSimulatedProduction();
+            log.info("Config - productionDataPointNames: '{}', planDataPointNames: '{}'", productionConfig, planConfig);
+
+            String[] productionKeywords = productionConfig.split(",");
+            String[] planKeywords = planConfig.split(",");
+
+            log.info("Looking for production data points: {}", Arrays.toString(productionKeywords));
+            log.info("Looking for plan data points: {}", Arrays.toString(planKeywords));
+            log.info("Total data points count: {}", allDataPoints.size());
+
+            // 打印所有数据点名称，方便排查
+            for (DataPoint dp : allDataPoints) {
+                log.debug("DataPoint: name='{}', value='{}'", dp.getName(), dp.getValue());
             }
-            if (planProduction == 0) {
-                planProduction = 1000; // 默认计划产量
-            }
+
+            int todayProduction = extractDataPointValue(allDataPoints, productionKeywords);
+            int planProduction = extractDataPointValue(allDataPoints, planKeywords);
+
+            log.info("Extracted - Today production: {}, Plan production: {}", todayProduction, planProduction);
 
             double productionRate = planProduction > 0 ? (double) todayProduction / planProduction * 100 : 0;
 
@@ -110,41 +130,54 @@ public class DashboardService {
     }
 
     /**
-     * 从数据点提取生产数量
+     * 从数据点提取数值（支持精确匹配和包含匹配，对所有匹配的数据点求和）
      */
-    private int extractProductionCount(List<DataPoint> dataPoints, String... keywords) {
-        for (DataPoint dp : dataPoints) {
-            String name = dp.getName().toLowerCase();
-            for (String keyword : keywords) {
-                if (name.contains(keyword.toLowerCase())) {
-                    try {
-                        return Integer.parseInt(dp.getValue());
-                    } catch (NumberFormatException e) {
-                        // 忽略非数字值
-                    }
-                }
-            }
-        }
-        return 0;
-    }
+    private int extractDataPointValue(List<DataPoint> dataPoints, String... keywords) {
+        int total = 0;
+        Set<String> matchedIds = new HashSet<>(); // 避免重复计算同一个数据点
 
-    /**
-     * 从数据点提取计划数量
-     */
-    private int extractPlanCount(List<DataPoint> dataPoints, String... keywords) {
-        for (DataPoint dp : dataPoints) {
-            String name = dp.getName().toLowerCase();
-            for (String keyword : keywords) {
-                if (name.contains(keyword.toLowerCase())) {
+        // 第一轮：精确匹配
+        for (String keyword : keywords) {
+            String trimmedKeyword = keyword.trim();
+            for (DataPoint dp : dataPoints) {
+                if (dp.getName().equals(trimmedKeyword) && !matchedIds.contains(dp.getId())) {
                     try {
-                        return Integer.parseInt(dp.getValue());
+                        String value = dp.getValue();
+                        if (value != null && !value.isEmpty()) {
+                            int val = (int) Double.parseDouble(value);
+                            total += val;
+                            matchedIds.add(dp.getId());
+                            log.debug("Exact match: '{}' = {} (total: {})", dp.getName(), val, total);
+                        }
                     } catch (NumberFormatException e) {
-                        // 忽略非数字值
+                        log.warn("Cannot parse value '{}' for data point '{}'", dp.getValue(), dp.getName());
                     }
                 }
             }
         }
-        return 0;
+
+        // 第二轮：包含匹配（排除已匹配的）
+        for (String keyword : keywords) {
+            String trimmedKeyword = keyword.trim().toLowerCase();
+            for (DataPoint dp : dataPoints) {
+                if (dp.getName().toLowerCase().contains(trimmedKeyword) && !matchedIds.contains(dp.getId())) {
+                    try {
+                        String value = dp.getValue();
+                        if (value != null && !value.isEmpty()) {
+                            int val = (int) Double.parseDouble(value);
+                            total += val;
+                            matchedIds.add(dp.getId());
+                            log.debug("Contains match: '{}' = {} (total: {})", dp.getName(), val, total);
+                        }
+                    } catch (NumberFormatException e) {
+                        log.warn("Cannot parse value '{}' for data point '{}'", dp.getValue(), dp.getName());
+                    }
+                }
+            }
+        }
+
+        log.info("Total matched {} data points, sum = {}", matchedIds.size(), total);
+        return total;
     }
 
     /**
@@ -177,16 +210,6 @@ public class DashboardService {
             }
         }
         return 98.5; // 默认良品率
-    }
-
-    /**
-     * 生成模拟生产数量
-     */
-    private int generateSimulatedProduction() {
-        // 根据当前时间模拟产量增长
-        int hour = LocalDate.now().getDayOfYear() * 24 + java.time.LocalTime.now().getHour();
-        Random random = new Random(hour);
-        return 500 + random.nextInt(500);
     }
 
     /**

@@ -46,11 +46,13 @@ const getLevelText = (level: number) => {
 .alarm-list-card {
   display: flex;
   flex-direction: column;
+  min-height: 0;
 }
 
 .alarm-wrapper {
   flex: 1;
   overflow-y: auto;
+  min-height: 0;
 }
 
 .no-alarm {
@@ -62,21 +64,21 @@ const getLevelText = (level: number) => {
   color: #00ff88;
 
   .icon {
-    font-size: 48px;
-    margin-bottom: 10px;
+    font-size: 36px;
+    margin-bottom: 8px;
   }
 }
 
 .alarm-list {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
 }
 
 .alarm-item {
   background: rgba(255, 255, 255, 0.05);
-  border-radius: 6px;
-  padding: 12px;
+  border-radius: 4px;
+  padding: 8px;
   border-left: 3px solid #ffaa00;
 
   &.level-1 {
@@ -102,30 +104,31 @@ const getLevelText = (level: number) => {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 8px;
+  margin-bottom: 4px;
 }
 
 .alarm-device {
   font-weight: bold;
+  font-size: 12px;
   color: #fff;
 }
 
 .alarm-level {
-  font-size: 12px;
-  padding: 2px 8px;
-  border-radius: 4px;
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 3px;
   background: rgba(255, 100, 0, 0.3);
   color: #ffaa00;
 }
 
 .alarm-content {
-  font-size: 14px;
+  font-size: 11px;
   color: rgba(255, 255, 255, 0.8);
-  margin-bottom: 6px;
+  margin-bottom: 4px;
 }
 
 .alarm-time {
-  font-size: 12px;
+  font-size: 10px;
   color: rgba(255, 255, 255, 0.5);
 }
 </style>

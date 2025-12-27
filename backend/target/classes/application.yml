@@ -23,6 +23,10 @@ xinje:
     base-url: https://cloud.xinje.net
     username: 宁波焱城智能科技有限公司    # 替换为你的用户名
     password: Yanchengzhineng@123  # 替换为你的密码
+    # 数据点名称配置（用逗号分隔多个可能的名称，会按顺序匹配）
+    # 启动后访问 http://localhost:8080/api/datapoints 查看所有可用的数据点名称
+    production-data-point-names: HD200
+    plan-data-point-names: 生产计划数
 
 # Data polling interval (milliseconds)
 polling:

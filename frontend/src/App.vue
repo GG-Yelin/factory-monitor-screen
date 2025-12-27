@@ -10,7 +10,7 @@
       <div class="time">{{ currentTime }}</div>
     </header>
 
-    <!-- 内容区域 -->
+    <!-- 内容区域 - 3行布局 -->
     <main class="dashboard-content">
       <!-- 第一行：统计卡片 -->
       <StatCard
@@ -47,14 +47,7 @@
       />
       <EfficiencyGauge title="设备效率 OEE" :value="data?.equipmentEfficiency ?? 0" />
 
-      <!-- 第三行：统计概览和月度图表 -->
-      <StatisticsOverview
-        :today-data="overview?.today ?? null"
-        :month-data="overview?.currentMonth ?? null"
-      />
-      <MonthlyChart :data="monthlyStats" />
-
-      <!-- 第四行：设备和报警 -->
+      <!-- 第三行：设备列表、报警列表、数据点 -->
       <DeviceList :devices="data?.devices ?? []" />
       <AlarmList :alarms="data?.alarms ?? []" />
       <DataPointList :data-points="data?.dataPoints ?? []" />
@@ -65,7 +58,6 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useWebSocket } from '@/composables/useWebSocket'
-import { useStatistics } from '@/composables/useStatistics'
 import StatCard from '@/components/StatCard.vue'
 import ProductionChart from '@/components/ProductionChart.vue'
 import DeviceStatusChart from '@/components/DeviceStatusChart.vue'
@@ -73,17 +65,13 @@ import EfficiencyGauge from '@/components/EfficiencyGauge.vue'
 import DeviceList from '@/components/DeviceList.vue'
 import AlarmList from '@/components/AlarmList.vue'
 import DataPointList from '@/components/DataPointList.vue'
-import StatisticsOverview from '@/components/StatisticsOverview.vue'
-import MonthlyChart from '@/components/MonthlyChart.vue'
 import dayjs from 'dayjs'
 
 const { data, connected } = useWebSocket()
-const { overview, monthlyStats, fetchOverview, fetchRecentMonthlyStats } = useStatistics()
 
 const currentTime = ref(dayjs().format('YYYY-MM-DD HH:mm:ss'))
 
 let timeTimer: number | null = null
-let statsTimer: number | null = null
 
 const updateTime = () => {
   currentTime.value = dayjs().format('YYYY-MM-DD HH:mm:ss')
@@ -97,43 +85,19 @@ const getProductionRateType = () => {
   return 'danger'
 }
 
-const loadStatistics = async () => {
-  await Promise.all([
-    fetchOverview(),
-    fetchRecentMonthlyStats(12)
-  ])
-}
-
 onMounted(() => {
   timeTimer = window.setInterval(updateTime, 1000)
-
-  // 加载统计数据
-  loadStatistics()
-
-  // 每5分钟刷新统计数据
-  statsTimer = window.setInterval(loadStatistics, 5 * 60 * 1000)
 })
 
 onUnmounted(() => {
   if (timeTimer) {
     clearInterval(timeTimer)
   }
-  if (statsTimer) {
-    clearInterval(statsTimer)
-  }
 })
 </script>
 
 <style scoped lang="scss">
 .dashboard-content {
-  height: calc(100% - 80px);
-  padding: 20px;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: 120px 280px 160px 280px;
-  gap: 20px;
-  overflow-y: auto;
-
   // 第一行：4个统计卡片
   > :nth-child(1),
   > :nth-child(2),
@@ -151,46 +115,13 @@ onUnmounted(() => {
     grid-column: span 1;
   }
 
-  // 第三行：统计概览(2列) + 月度图表(2列)
+  // 第三行：设备列表(2列) + 报警列表(1列) + 数据点(1列)
   > :nth-child(8) {
     grid-column: span 2;
   }
-  > :nth-child(9) {
-    grid-column: span 2;
-  }
-
-  // 第四行：设备列表(2列) + 报警列表(1列) + 数据点(1列)
+  > :nth-child(9),
   > :nth-child(10) {
-    grid-column: span 2;
-  }
-  > :nth-child(11),
-  > :nth-child(12) {
     grid-column: span 1;
-  }
-}
-
-// 响应式调整
-@media (max-width: 1600px) {
-  .dashboard-content {
-    grid-template-columns: repeat(4, 1fr);
-  }
-}
-
-@media (max-width: 1200px) {
-  .dashboard-content {
-    grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: auto;
-
-    > :nth-child(n) {
-      grid-column: span 1;
-    }
-
-    > :nth-child(5),
-    > :nth-child(8),
-    > :nth-child(9),
-    > :nth-child(10) {
-      grid-column: span 2;
-    }
   }
 }
 </style>

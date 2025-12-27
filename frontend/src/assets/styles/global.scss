@@ -43,16 +43,17 @@ html, body {
 
 // 标题样式
 .dashboard-header {
-  height: 80px;
+  height: 60px;
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
   background: linear-gradient(180deg, rgba(0, 100, 200, 0.3) 0%, transparent 100%);
   border-bottom: 2px solid rgba(0, 150, 255, 0.3);
+  flex-shrink: 0;
 
   .title {
-    font-size: 32px;
+    font-size: 28px;
     font-weight: bold;
     background: linear-gradient(90deg, #00d4ff, #00ff88);
     -webkit-background-clip: text;
@@ -62,21 +63,22 @@ html, body {
 
   .time {
     position: absolute;
-    right: 30px;
-    font-size: 18px;
+    right: 20px;
+    font-size: 16px;
     color: #00d4ff;
   }
 
   .status {
     position: absolute;
-    left: 30px;
+    left: 20px;
     display: flex;
     align-items: center;
     gap: 8px;
+    font-size: 14px;
 
     .dot {
-      width: 10px;
-      height: 10px;
+      width: 8px;
+      height: 8px;
       border-radius: 50%;
       background: #00ff88;
       animation: pulse 2s infinite;
@@ -93,24 +95,27 @@ html, body {
   50% { opacity: 0.5; }
 }
 
-// 内容区域
+// 内容区域 - 单屏布局，不滚动
 .dashboard-content {
-  height: calc(100% - 80px);
-  padding: 20px;
+  height: calc(100% - 60px);
+  padding: 12px;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: auto 1fr 1fr;
-  gap: 20px;
+  grid-template-rows: 80px 1fr 1fr;
+  gap: 12px;
+  overflow: hidden;
 }
 
 // 卡片样式
 .card {
   background: rgba(0, 30, 60, 0.6);
   border: 1px solid rgba(0, 150, 255, 0.3);
-  border-radius: 8px;
-  padding: 20px;
+  border-radius: 6px;
+  padding: 12px;
   position: relative;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
 
   &::before {
     content: '';
@@ -118,22 +123,23 @@ html, body {
     top: 0;
     left: 0;
     right: 0;
-    height: 3px;
+    height: 2px;
     background: linear-gradient(90deg, #00d4ff, #00ff88);
   }
 
   .card-title {
-    font-size: 16px;
+    font-size: 14px;
     color: #00d4ff;
-    margin-bottom: 15px;
+    margin-bottom: 8px;
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
+    flex-shrink: 0;
 
     &::before {
       content: '';
-      width: 4px;
-      height: 16px;
+      width: 3px;
+      height: 14px;
       background: linear-gradient(180deg, #00d4ff, #00ff88);
       border-radius: 2px;
     }
@@ -147,9 +153,10 @@ html, body {
   align-items: center;
   justify-content: center;
   text-align: center;
+  padding: 8px;
 
   .value {
-    font-size: 48px;
+    font-size: 32px;
     font-weight: bold;
     background: linear-gradient(180deg, #fff, #00d4ff);
     -webkit-background-clip: text;
@@ -158,15 +165,15 @@ html, body {
   }
 
   .label {
-    font-size: 14px;
+    font-size: 12px;
     color: rgba(255, 255, 255, 0.7);
-    margin-top: 8px;
+    margin-top: 4px;
   }
 
   .sub-info {
-    font-size: 12px;
+    font-size: 11px;
     color: #00ff88;
-    margin-top: 4px;
+    margin-top: 2px;
   }
 
   &.warning .value {
@@ -211,7 +218,7 @@ html, body {
   border-collapse: collapse;
 
   th, td {
-    padding: 10px;
+    padding: 8px 10px;
     text-align: left;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   }

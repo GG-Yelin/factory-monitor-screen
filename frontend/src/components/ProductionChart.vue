@@ -35,10 +35,10 @@ const initChart = () => {
       top: 0
     },
     grid: {
-      top: 40,
-      left: 50,
-      right: 20,
-      bottom: 30
+      top: 30,
+      left: 45,
+      right: 15,
+      bottom: 25
     },
     xAxis: {
       type: 'category',
@@ -111,12 +111,14 @@ watch(() => props.data, updateChart, { deep: true })
 
 <style scoped lang="scss">
 .chart-card {
-  grid-column: span 2;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
 }
 
 .chart-container {
+  flex: 1;
   width: 100%;
-  height: calc(100% - 40px);
-  min-height: 200px;
+  min-height: 0;
 }
 </style>
