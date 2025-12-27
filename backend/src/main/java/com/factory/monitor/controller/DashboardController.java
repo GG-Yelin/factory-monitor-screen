@@ -46,11 +46,22 @@ public class DashboardController {
     }
 
     /**
-     * 获取设备列表
+     * 获取设备列表（按项目）
      */
     @GetMapping("/devices")
     public ResponseEntity<List<DeviceInfo>> getDevices(@RequestParam String itemId) {
         List<DeviceInfo> devices = xinjeCloudService.getDeviceList(itemId);
+        return ResponseEntity.ok(devices);
+    }
+
+    /**
+     * 获取所有设备列表（包含在线状态）
+     */
+    @GetMapping("/devices/all")
+    public ResponseEntity<List<DeviceInfo>> getAllDevices(
+            @RequestParam(defaultValue = "100") int pageSize,
+            @RequestParam(defaultValue = "1") int currentPage) {
+        List<DeviceInfo> devices = xinjeCloudService.getAllDevicesWithStatus(pageSize, currentPage);
         return ResponseEntity.ok(devices);
     }
 

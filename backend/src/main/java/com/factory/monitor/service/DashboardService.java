@@ -31,24 +31,24 @@ public class DashboardService {
             // 获取项目列表
             List<ProjectInfo> projects = xinjeCloudService.getProjectList();
 
-            // 获取所有设备
-            List<DeviceInfo> allDevices = new ArrayList<>();
+            // 使用新接口获取所有设备（包含真实在线状态）
+            List<DeviceInfo> allDevices = xinjeCloudService.getAllDevicesWithStatus();
             List<DataPoint> allDataPoints = new ArrayList<>();
 
-            for (ProjectInfo project : projects) {
-                List<DeviceInfo> devices = xinjeCloudService.getDeviceList(project.getItemId());
-                for (DeviceInfo device : devices) {
-                    device.setItemName(project.getItemName());
-                }
-                allDevices.addAll(devices);
+            // 按项目分组统计设备
+            Map<String, List<DeviceInfo>> devicesByProject = allDevices.stream()
+                    .filter(d -> d.getItemId() != null)
+                    .collect(java.util.stream.Collectors.groupingBy(DeviceInfo::getItemId));
 
+            for (ProjectInfo project : projects) {
                 // 获取实时数据
                 List<DataPoint> dataPoints = xinjeCloudService.getItemData(project.getItemId());
                 allDataPoints.addAll(dataPoints);
 
-                // 更新项目的设备数量
-                project.setDeviceCount(devices.size());
-                project.setOnlineCount((int) devices.stream().filter(d -> d.getStatus() == 1).count());
+                // 更新项目的设备数量（从设备列表中统计）
+                List<DeviceInfo> projectDevices = devicesByProject.getOrDefault(project.getItemId(), new ArrayList<>());
+                project.setDeviceCount(projectDevices.size());
+                project.setOnlineCount((int) projectDevices.stream().filter(d -> d.getStatus() == 1).count());
             }
 
             // 统计设备状态

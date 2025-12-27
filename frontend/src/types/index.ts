@@ -4,7 +4,10 @@ export interface DeviceInfo {
   deviceType: string
   itemId: string
   itemName: string
-  status: number // 0: 离线, 1: 在线, 2: 报警
+  status: number // 0: 离线, 1: 在线, 2: 异常
+  netType?: string // 设备网络类型
+  isVNC?: boolean // 是否支持NoVNC
+  commId?: string // 通讯id
 }
 
 export interface DataPoint {

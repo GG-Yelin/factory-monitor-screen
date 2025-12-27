@@ -15,5 +15,8 @@ public class DeviceInfo {
     private String deviceType;
     private String itemId;
     private String itemName;
-    private Integer status;  // 0: 离线, 1: 在线, 2: 报警
+    private Integer status;  // 0: 离线, 1: 在线, 2: 异常
+    private String netType;  // 设备网络类型
+    private Boolean isVNC;   // 是否支持NoVNC
+    private String commId;   // 通讯id
 }

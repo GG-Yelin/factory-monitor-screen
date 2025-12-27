@@ -1,7 +1,12 @@
 {
   "permissions": {
     "allow": [
-      "Bash(pdftotext -layout /Users/wangyu/Desktop/云平台接口文档_20241015.pdf -)"
+      "Bash(pdftotext -layout /Users/wangyu/Desktop/云平台接口文档_20241015.pdf -)",
+      "Bash(python3 -c \"\nimport sys\ntry:\n    import fitz  # PyMuPDF\n    doc = fitz.open\\(''/Users/wangyu/Desktop/云平台接口文档_20241015.pdf''\\)\n    for page in doc:\n        text = page.get_text\\(\\)\n        if ''4.2.3'' in text or ''设备列表'' in text or ''deviceList'' in text:\n            print\\(f''=== Page {page.number + 1} ===''\\)\n            print\\(text\\)\n            print\\(\\)\nexcept ImportError:\n    print\\(''PyMuPDF not installed''\\)\n\")",
+      "Bash(python3 -c \"\ntry:\n    from pypdf import PdfReader\n    reader = PdfReader\\(''/Users/wangyu/Desktop/云平台接口文档_20241015.pdf''\\)\n    for i, page in enumerate\\(reader.pages\\):\n        text = page.extract_text\\(\\) or ''''\n        if ''4.2.3'' in text or ''设备列表'' in text or ''userdevicelist'' in text.lower\\(\\):\n            print\\(f''=== Page {i + 1} ===''\\)\n            print\\(text\\)\n            print\\(''\\\\n''\\)\nexcept Exception as e:\n    print\\(f''Error: {e}''\\)\n\")",
+      "Bash(pip3 install pypdf -q)",
+      "Bash(python3 -c \"\nfrom pypdf import PdfReader\nreader = PdfReader\\(''/Users/wangyu/Desktop/云平台接口文档_20241015.pdf''\\)\nfor i, page in enumerate\\(reader.pages\\):\n    text = page.extract_text\\(\\) or ''''\n    if ''4.2.3'' in text or ''所有设备'' in text or ''userdevicelist'' in text.lower\\(\\):\n        print\\(f''=== Page {i + 1} ===''\\)\n        print\\(text\\)\n        print\\(''\\\\n''\\)\n\")",
+      "Bash(python3 -c \"\nfrom pypdf import PdfReader\nreader = PdfReader\\(''/Users/wangyu/Desktop/云平台接口文档_20241015.pdf''\\)\n# 读取第19-22页（索引18-21）\nfor i in range\\(18, 23\\):\n    if i < len\\(reader.pages\\):\n        text = reader.pages[i].extract_text\\(\\) or ''''\n        print\\(f''=== Page {i + 1} ===''\\)\n        print\\(text\\)\n        print\\(''\\\\n''\\)\n\")"
     ]
   }
 }

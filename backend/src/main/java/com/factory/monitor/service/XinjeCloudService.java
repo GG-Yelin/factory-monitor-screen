@@ -338,4 +338,71 @@ public class XinjeCloudService {
             return false;
         }
     }
+
+    /**
+     * 获取用户所有设备列表（包含在线状态）
+     * 接口: 4.2.3 获取用户所有设备列表
+     */
+    public List<DeviceInfo> getAllDevicesWithStatus(int pageSize, int currentPage) {
+        try {
+            String validToken = getValidToken();
+            if (validToken == null) {
+                return new ArrayList<>();
+            }
+
+            String url = String.format("%s/api/v1/ItemData/getDevicePreview?kw=&onlineStatus=-1&netType=&itemId=&totalCount=1000&pageSize=%d&currentPage=%d",
+                    xinjeConfig.getBaseUrl(), pageSize, currentPage);
+
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(url))
+                    .header("Authorization", "Bearer " + validToken)
+                    .header("Content-Type", "application/json; charset=utf-8")
+                    .GET()
+                    .build();
+
+            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+            List<DeviceInfo> devices = new ArrayList<>();
+            if (response.statusCode() == 200) {
+                JSONObject json = JSON.parseObject(response.body());
+                if (json.getInteger("code") == 200) {
+                    JSONArray data = json.getJSONArray("data");
+                    if (data != null) {
+                        for (int i = 0; i < data.size(); i++) {
+                            JSONObject item = data.getJSONObject(i);
+                            DeviceInfo device = DeviceInfo.builder()
+                                    .deviceId(item.getString("deviceId"))
+                                    .deviceName(item.getString("deviceName"))
+                                    .deviceType(item.getString("netType"))
+                                    .netType(item.getString("netType"))
+                                    .itemId(item.getString("itemId"))
+                                    .itemName(item.getString("itemName"))
+                                    .status(item.getInteger("onlineStatus")) // 0: 离线, 1: 在线, 2: 异常
+                                    .isVNC(item.getBoolean("isVNC"))
+                                    .commId(item.getString("commId"))
+                                    .build();
+                            devices.add(device);
+                        }
+                    }
+                    log.info("Get all devices with status success, count: {}", devices.size());
+                }
+            } else {
+                log.error("Get all devices failed, status: {}, body: {}", response.statusCode(), response.body());
+            }
+
+            // 缓存设备数据
+            cache.put("allDevices", devices);
+            return devices;
+        } catch (Exception e) {
+            log.error("Get all devices with status error", e);
+            return (List<DeviceInfo>) cache.getOrDefault("allDevices", new ArrayList<>());
+        }
+    }
+
+    /**
+     * 获取用户所有设备列表（获取全部，自动分页）
+     */
+    public List<DeviceInfo> getAllDevicesWithStatus() {
+        return getAllDevicesWithStatus(100, 1);
+    }
 }
