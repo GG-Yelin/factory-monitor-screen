@@ -1,0 +1,27 @@
+{
+  "groups": [
+    {
+      "name": "xinje.cloud",
+      "type": "com.factory.monitor.config.XinjeConfig",
+      "sourceType": "com.factory.monitor.config.XinjeConfig"
+    }
+  ],
+  "properties": [
+    {
+      "name": "xinje.cloud.base-url",
+      "type": "java.lang.String",
+      "sourceType": "com.factory.monitor.config.XinjeConfig"
+    },
+    {
+      "name": "xinje.cloud.password",
+      "type": "java.lang.String",
+      "sourceType": "com.factory.monitor.config.XinjeConfig"
+    },
+    {
+      "name": "xinje.cloud.username",
+      "type": "java.lang.String",
+      "sourceType": "com.factory.monitor.config.XinjeConfig"
+    }
+  ],
+  "hints": []
+}

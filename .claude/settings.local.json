@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pdftotext -layout /Users/wangyu/Desktop/云平台接口文档_20241015.pdf -)"
+    ]
+  }
+}

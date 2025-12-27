@@ -1,0 +1,39 @@
+server:
+  port: 8080
+
+# Database Configuration
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/factory_monitor?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&createDatabaseIfNotExist=true
+    username: root
+    password: root  # 替换为你的MySQL密码
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.MySQLDialect
+
+# Xinje Cloud Platform Configuration
+xinje:
+  cloud:
+    base-url: https://cloud.xinje.net
+    username: 宁波焱城智能科技有限公司    # 替换为你的用户名
+    password: Yanchengzhineng@123  # 替换为你的密码
+
+# Data polling interval (milliseconds)
+polling:
+  interval: 3000  # 3秒轮询一次
+
+# Logging
+logging:
+  level:
+    com.factory.monitor: DEBUG
+    org.springframework.web: INFO
+
+# CORS configuration
+cors:
+  allowed-origins: http://localhost:5173,http://localhost:3000
