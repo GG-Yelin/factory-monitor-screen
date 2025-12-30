@@ -1,11 +1,14 @@
 package com.factory.monitor.service;
 
 import com.factory.monitor.config.XinjeConfig;
+import com.factory.monitor.entity.AlarmRecord;
 import com.factory.monitor.model.*;
+import com.factory.monitor.repository.AlarmRecordRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -16,14 +19,19 @@ public class DashboardService {
 
     private final XinjeCloudService xinjeCloudService;
     private final XinjeConfig xinjeConfig;
+    private final AlarmRecordRepository alarmRecordRepository;
 
     // 数据缓存
     private DashboardData cachedData;
     private final Map<String, Integer> productionHistory = new ConcurrentHashMap<>();
+    // 记录已报警的设备，避免重复报警（key: deviceId, value: 最近报警时间）
+    private final Map<String, LocalDateTime> alarmCache = new ConcurrentHashMap<>();
 
-    public DashboardService(XinjeCloudService xinjeCloudService, XinjeConfig xinjeConfig) {
+    public DashboardService(XinjeCloudService xinjeCloudService, XinjeConfig xinjeConfig,
+                           AlarmRecordRepository alarmRecordRepository) {
         this.xinjeCloudService = xinjeCloudService;
         this.xinjeConfig = xinjeConfig;
+        this.alarmRecordRepository = alarmRecordRepository;
     }
 
     /**
@@ -240,26 +248,67 @@ public class DashboardService {
     }
 
     /**
-     * 生成报警信息
+     * 生成报警信息并保存到数据库
      */
     private List<AlarmInfo> generateAlarms(List<DeviceInfo> devices) {
         List<AlarmInfo> alarms = new ArrayList<>();
+        LocalDateTime now = LocalDateTime.now();
+        // 报警间隔时间（分钟），同一设备在此时间内不重复报警
+        long alarmIntervalMinutes = 30;
 
         // 检查设备状态生成报警
         for (DeviceInfo device : devices) {
             if (device.getStatus() == 2) {
+                String deviceId = device.getDeviceId();
+
+                // 检查是否需要生成新报警（避免重复）
+                boolean shouldCreateAlarm = true;
+                LocalDateTime lastAlarmTime = alarmCache.get(deviceId);
+                if (lastAlarmTime != null) {
+                    // 如果最近已经报过警，检查时间间隔
+                    if (lastAlarmTime.plusMinutes(alarmIntervalMinutes).isAfter(now)) {
+                        shouldCreateAlarm = false;
+                    }
+                }
+
+                if (shouldCreateAlarm) {
+                    // 保存报警记录到数据库
+                    AlarmRecord alarmRecord = AlarmRecord.builder()
+                            .deviceId(deviceId)
+                            .deviceName(device.getDeviceName())
+                            .alarmType("设备报警")
+                            .alarmContent("设备运行异常，请检查")
+                            .level(2)
+                            .status(0)
+                            .alarmTime(now)
+                            .build();
+
+                    try {
+                        alarmRecordRepository.save(alarmRecord);
+                        alarmCache.put(deviceId, now);
+                        log.info("保存报警记录: 设备={}, 报警类型={}", deviceId, "设备报警");
+                    } catch (Exception e) {
+                        log.error("保存报警记录失败: 设备={}", deviceId, e);
+                    }
+                }
+
+                // 返回给前端显示
                 alarms.add(AlarmInfo.builder()
                         .id(UUID.randomUUID().toString())
-                        .deviceId(device.getDeviceId())
+                        .deviceId(deviceId)
                         .deviceName(device.getDeviceName())
                         .alarmType("设备报警")
                         .alarmContent("设备运行异常，请检查")
-                        .alarmTime(java.time.LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
+                        .alarmTime(now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
                         .level(2)
                         .status(0)
                         .build());
             }
         }
+
+        // 清理过期的报警缓存（超过1小时的）
+        alarmCache.entrySet().removeIf(entry ->
+                entry.getValue().plusHours(1).isBefore(now));
 
         return alarms;
     }
