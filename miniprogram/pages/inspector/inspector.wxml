@@ -3,10 +3,10 @@
   <view class="header-card">
     <view class="user-info">
       <view class="avatar">
-        <text>{{userInfo.name ? userInfo.name[0] : 'U'}}</text>
+        <text>{{userInfo.realName ? userInfo.realName[0] : (userInfo.username ? userInfo.username[0] : 'U')}}</text>
       </view>
       <view class="user-detail">
-        <view class="user-name">{{userInfo.name || '未登录'}}</view>
+        <view class="user-name">{{userInfo.realName || userInfo.username || '未登录'}}</view>
         <view class="user-meta">
           <text class="employee-no">工号: {{userInfo.employeeNo || '-'}}</text>
           <text class="role-tag">质检员</text>
@@ -35,25 +35,25 @@
     <view class="action-grid">
       <view class="action-item" bindtap="goToScanInspection">
         <view class="action-icon scan-icon">
-          <text>&#xe619;</text>
+          <text class="icon-emoji">📷</text>
         </view>
         <view class="action-text">扫码质检</view>
       </view>
       <view class="action-item" bindtap="goToInspectionList">
         <view class="action-icon list-icon">
-          <text>&#xe61a;</text>
+          <text class="icon-emoji">📋</text>
         </view>
         <view class="action-text">质检记录</view>
       </view>
       <view class="action-item" bindtap="goToWage">
         <view class="action-icon wage-icon">
-          <text>&#xe61b;</text>
+          <text class="icon-emoji">💰</text>
         </view>
         <view class="action-text">我的工资</view>
       </view>
       <view class="action-item" bindtap="goToProfile">
         <view class="action-icon profile-icon">
-          <text>&#xe61c;</text>
+          <text class="icon-emoji">👤</text>
         </view>
         <view class="action-text">个人中心</view>
       </view>

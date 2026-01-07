@@ -57,7 +57,7 @@
       <view class="record-item" wx:for="{{records}}" wx:key="id">
         <view class="record-header">
           <text class="record-date">{{item.workDate}}</text>
-          <text class="record-amount">+¥{{item.amount}}</text>
+          <text class="record-amount">+¥{{item.wage}}</text>
         </view>
         <view class="record-body">
           <view class="record-info">
@@ -65,7 +65,7 @@
             <text class="process-name">{{item.processName}}</text>
           </view>
           <view class="record-qty">
-            <text>{{item.completedQuantity}}件 × ¥{{item.unitPrice}}</text>
+            <text>{{item.quantity}}件 × ¥{{item.unitPrice}}</text>
           </view>
         </view>
       </view>

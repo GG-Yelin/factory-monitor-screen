@@ -202,4 +202,42 @@ public class WorkReportService {
     public List<WorkReport> findReportsByOperator(Long operatorId, LocalDateTime startTime, LocalDateTime endTime) {
         return workReportRepository.findByOperatorIdAndTimeRange(operatorId, startTime, endTime);
     }
+
+    /**
+     * 获取员工今日统计
+     */
+    public TodayStatsDto getTodayStats(Long operatorId) {
+        LocalDateTime startOfDay = LocalDate.now().atStartOfDay();
+        LocalDateTime endOfDay = LocalDate.now().plusDays(1).atStartOfDay();
+
+        List<WorkReport> todayReports = workReportRepository.findByOperatorIdAndTimeRange(operatorId, startOfDay, endOfDay);
+
+        int completedCount = todayReports.size();
+        int totalQuantity = todayReports.stream().mapToInt(WorkReport::getCompletedQuantity).sum();
+        BigDecimal wage = todayReports.stream()
+                .map(WorkReport::getWage)
+                .filter(w -> w != null)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        return new TodayStatsDto(completedCount, totalQuantity, wage);
+    }
+
+    /**
+     * 今日统计 DTO
+     */
+    public static class TodayStatsDto {
+        private int completedCount;
+        private int totalQuantity;
+        private BigDecimal wage;
+
+        public TodayStatsDto(int completedCount, int totalQuantity, BigDecimal wage) {
+            this.completedCount = completedCount;
+            this.totalQuantity = totalQuantity;
+            this.wage = wage;
+        }
+
+        public int getCompletedCount() { return completedCount; }
+        public int getTotalQuantity() { return totalQuantity; }
+        public BigDecimal getWage() { return wage; }
+    }
 }

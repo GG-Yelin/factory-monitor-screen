@@ -15,7 +15,11 @@
       "Bash(./mvnw compile -q)",
       "Bash(python3 -c \"\nfrom pypdf import PdfReader\nreader = PdfReader\\(''/Users/wangyubj15/factory/factory-monitor-screen/小工单需求分析.pdf''\\)\nfor i, page in enumerate\\(reader.pages\\):\n    text = page.extract_text\\(\\) or ''''\n    print\\(f''=== Page {i + 1} ===''\\)\n    print\\(text\\)\n    print\\(''\\\\n''\\)\n\")",
       "Bash(/Library/Developer/CommandLineTools/usr/bin/python3 -m pip install pypdf -q)",
-      "Bash(/Library/Developer/CommandLineTools/usr/bin/python3 -c \"\nfrom pypdf import PdfReader\nreader = PdfReader\\(''/Users/wangyubj15/factory/factory-monitor-screen/小工单需求分析.pdf''\\)\nfor i, page in enumerate\\(reader.pages\\):\n    text = page.extract_text\\(\\) or ''''\n    print\\(f''=== Page {i + 1} ===''\\)\n    print\\(text\\)\n    print\\(''\\\\n''\\)\n\")"
+      "Bash(/Library/Developer/CommandLineTools/usr/bin/python3 -c \"\nfrom pypdf import PdfReader\nreader = PdfReader\\(''/Users/wangyubj15/factory/factory-monitor-screen/小工单需求分析.pdf''\\)\nfor i, page in enumerate\\(reader.pages\\):\n    text = page.extract_text\\(\\) or ''''\n    print\\(f''=== Page {i + 1} ===''\\)\n    print\\(text\\)\n    print\\(''\\\\n''\\)\n\")",
+      "Bash(/Library/Developer/CommandLineTools/usr/bin/python3 -m pip install Pillow -q)",
+      "Bash(curl -s -X POST http://localhost:8080/api/auth/login -H \"Content-Type: application/json\" -d '{\"\"\"\"username\"\"\"\":\"\"\"\"admin\"\"\"\",\"\"\"\"password\"\"\"\":\"\"\"\"123456\"\"\"\"}')",
+      "Bash(python3 -m json.tool)",
+      "Bash(curl -s -X POST http://localhost:8080/api/auth/login -H 'Content-Type: application/json' -d {\"\"username\"\":\"\"admin\"\",\"\"password\"\":\"\"123456\"\"})"
     ]
   }
 }

@@ -8,7 +8,7 @@
   <view class="form-section">
     <view class="input-group">
       <view class="input-icon">
-        <text class="iconfont">&#xe615;</text>
+        <text class="icon-text">👤</text>
       </view>
       <input
         class="input"
@@ -20,7 +20,7 @@
 
     <view class="input-group">
       <view class="input-icon">
-        <text class="iconfont">&#xe616;</text>
+        <text class="icon-text">🔒</text>
       </view>
       <input
         class="input"
@@ -30,7 +30,7 @@
         bindinput="onPasswordInput"
       />
       <view class="input-suffix" bindtap="togglePassword">
-        <text class="iconfont">{{showPassword ? '&#xe617;' : '&#xe618;'}}</text>
+        <text class="icon-text">{{showPassword ? '👁' : '👁‍🗨'}}</text>
       </view>
     </view>
 

@@ -82,6 +82,17 @@ public class WorkReportController {
     }
 
     /**
+     * 获取今日统计
+     */
+    @GetMapping("/today-stats")
+    public ApiResponse<WorkReportService.TodayStatsDto> getTodayStats(@AuthenticationPrincipal UserPrincipal userPrincipal) {
+        if (userPrincipal == null) {
+            return ApiResponse.unauthorized("未登录");
+        }
+        return ApiResponse.success(workReportService.getTodayStats(userPrincipal.getUserId()));
+    }
+
+    /**
      * 获取我的报工记录
      */
     @GetMapping("/my-reports")

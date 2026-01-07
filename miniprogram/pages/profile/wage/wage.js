@@ -131,8 +131,8 @@ Page({
         } else {
           // 否则累加计算
           allRecords.forEach(r => {
-            totalAmount += r.amount || 0
-            totalQuantity += r.completedQuantity || 0
+            totalAmount += r.wage || 0
+            totalQuantity += r.quantity || 0
           })
         }
 

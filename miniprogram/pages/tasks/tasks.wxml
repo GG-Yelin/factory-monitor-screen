@@ -80,7 +80,7 @@
 
   <!-- 空状态 -->
   <view class="empty" wx:if="{{!loading && tasks.length === 0}}">
-    <view class="empty-icon">&#xe620;</view>
+    <view class="empty-icon">📭</view>
     <text class="empty-text">暂无{{statusLabels[currentStatus] || ''}}任务</text>
   </view>
 

@@ -65,8 +65,8 @@ Page({
       hideLoading()
 
       if (res.code === 200 && res.data) {
-        // 保存登录信息
-        app.setLoginInfo(res.data.token, res.data.user)
+        // 保存登录信息 (后端返回 accessToken 和 userInfo)
+        app.setLoginInfo(res.data.accessToken, res.data.userInfo)
 
         // 记住账号
         if (rememberMe) {
@@ -95,8 +95,8 @@ Page({
   navigateToHome() {
     const userInfo = app.globalData.userInfo
     // 根据角色跳转不同页面
-    if (userInfo && userInfo.roles) {
-      if (userInfo.roles.includes('INSPECTOR')) {
+    if (userInfo && userInfo.role) {
+      if (userInfo.role === 'INSPECTOR') {
         wx.reLaunch({ url: '/pages/inspector/inspector' })
       } else {
         wx.reLaunch({ url: '/pages/operator/operator' })

@@ -131,6 +131,10 @@
   font-size: 48rpx;
 }
 
+.icon-emoji {
+  font-size: 44rpx;
+}
+
 .scan-icon {
   background: #e8f4ff;
   color: #409eff;

@@ -2,16 +2,16 @@
   <!-- 用户信息卡片 -->
   <view class="user-card">
     <view class="avatar">
-      <text>{{userInfo.name ? userInfo.name[0] : 'U'}}</text>
+      <text>{{userInfo.realName ? userInfo.realName[0] : (userInfo.username ? userInfo.username[0] : 'U')}}</text>
     </view>
     <view class="user-info">
-      <view class="user-name">{{userInfo.name || '未登录'}}</view>
+      <view class="user-name">{{userInfo.realName || userInfo.username || '未登录'}}</view>
       <view class="user-meta">
         <text class="employee-no">工号: {{userInfo.employeeNo || '-'}}</text>
       </view>
       <view class="user-tags">
         <text class="tag" wx:if="{{userInfo.teamName}}">{{userInfo.teamName}}</text>
-        <text class="tag" wx:for="{{userInfo.roles}}" wx:key="*this">{{getRoleLabel(item)}}</text>
+        <text class="tag" wx:if="{{userInfo.roleName}}">{{userInfo.roleName}}</text>
       </view>
     </view>
   </view>
@@ -20,7 +20,7 @@
   <view class="menu-section">
     <view class="menu-item" bindtap="goToWage">
       <view class="menu-icon wage-icon">
-        <text>&#xe61b;</text>
+        <text>💰</text>
       </view>
       <view class="menu-text">我的工资</view>
       <view class="menu-arrow">></view>
@@ -28,7 +28,7 @@
 
     <view class="menu-item" bindtap="goToGuide">
       <view class="menu-icon guide-icon">
-        <text>&#xe622;</text>
+        <text>📖</text>
       </view>
       <view class="menu-text">操作指南</view>
       <view class="menu-arrow">></view>
@@ -36,7 +36,7 @@
 
     <view class="menu-item" bindtap="goToSettings">
       <view class="menu-icon settings-icon">
-        <text>&#xe623;</text>
+        <text>⚙️</text>
       </view>
       <view class="menu-text">账号设置</view>
       <view class="menu-arrow">></view>
@@ -47,7 +47,7 @@
   <view class="menu-section">
     <view class="menu-item" bindtap="showAbout">
       <view class="menu-icon about-icon">
-        <text>&#xe624;</text>
+        <text>ℹ️</text>
       </view>
       <view class="menu-text">关于系统</view>
       <view class="menu-arrow">></view>

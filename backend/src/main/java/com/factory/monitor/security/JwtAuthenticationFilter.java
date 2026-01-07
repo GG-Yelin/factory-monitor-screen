@@ -34,23 +34,31 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                     FilterChain filterChain) throws ServletException, IOException {
         try {
             String jwt = getJwtFromRequest(request);
+            log.debug("Request URI: {}, JWT present: {}", request.getRequestURI(), StringUtils.hasText(jwt));
 
-            if (StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)) {
-                String username = tokenProvider.getUsernameFromToken(jwt);
-                Long userId = tokenProvider.getUserIdFromToken(jwt);
-                String role = tokenProvider.getRoleFromToken(jwt);
+            if (StringUtils.hasText(jwt)) {
+                boolean isValid = tokenProvider.validateToken(jwt);
+                log.debug("JWT valid: {}", isValid);
 
-                // 创建认证对象
-                UserPrincipal userPrincipal = new UserPrincipal(userId, username, role);
+                if (isValid) {
+                    String username = tokenProvider.getUsernameFromToken(jwt);
+                    Long userId = tokenProvider.getUserIdFromToken(jwt);
+                    String role = tokenProvider.getRoleFromToken(jwt);
+                    log.debug("JWT parsed - username: {}, userId: {}, role: {}", username, userId, role);
 
-                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                        userPrincipal,
-                        null,
-                        Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + role))
-                );
-                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    // 创建认证对象
+                    UserPrincipal userPrincipal = new UserPrincipal(userId, username, role);
 
-                SecurityContextHolder.getContext().setAuthentication(authentication);
+                    UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+                            userPrincipal,
+                            null,
+                            Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + role))
+                    );
+                    authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                    log.debug("Authentication set in SecurityContext");
+                }
             }
         } catch (Exception ex) {
             log.error("Could not set user authentication in security context", ex);

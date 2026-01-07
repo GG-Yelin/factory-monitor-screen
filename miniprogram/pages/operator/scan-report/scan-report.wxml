@@ -3,14 +3,13 @@
   <view class="scan-section" wx:if="{{!scanned}}">
     <view class="scan-area" bindtap="startScan">
       <view class="scan-icon">
-        <text class="iconfont">&#xe619;</text>
+        <text class="icon-emoji">📷</text>
       </view>
       <view class="scan-text">点击扫描工序二维码</view>
       <view class="scan-hint">请对准派工单上的工序二维码</view>
     </view>
     <button class="scan-btn" bindtap="startScan">
-      <text class="iconfont">&#xe619;</text>
-      开始扫码
+      📷 开始扫码
     </button>
   </view>
 

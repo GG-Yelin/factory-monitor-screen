@@ -113,7 +113,7 @@
 
   <!-- 空状态 -->
   <view class="empty-state" wx:if="{{!workOrderInfo.id && !loading}}">
-    <view class="empty-icon">&#xe621;</view>
+    <view class="empty-icon">📷</view>
     <text class="empty-text">请扫描工单二维码进行质检</text>
     <button class="scan-btn" bindtap="startScan">扫码质检</button>
   </view>
