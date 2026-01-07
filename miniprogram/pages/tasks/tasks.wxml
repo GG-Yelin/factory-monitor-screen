@@ -1,0 +1,91 @@
+<view class="tasks-page">
+  <!-- 状态筛选 -->
+  <view class="filter-bar">
+    <view
+      class="filter-item {{currentStatus === '' ? 'active' : ''}}"
+      bindtap="onFilterChange"
+      data-status=""
+    >全部</view>
+    <view
+      class="filter-item {{currentStatus === 'PENDING' ? 'active' : ''}}"
+      bindtap="onFilterChange"
+      data-status="PENDING"
+    >待开工</view>
+    <view
+      class="filter-item {{currentStatus === 'IN_PROGRESS' ? 'active' : ''}}"
+      bindtap="onFilterChange"
+      data-status="IN_PROGRESS"
+    >进行中</view>
+    <view
+      class="filter-item {{currentStatus === 'COMPLETED' ? 'active' : ''}}"
+      bindtap="onFilterChange"
+      data-status="COMPLETED"
+    >已完成</view>
+  </view>
+
+  <!-- 任务列表 -->
+  <view class="task-list" wx:if="{{!loading && tasks.length > 0}}">
+    <view
+      class="task-card"
+      wx:for="{{tasks}}"
+      wx:key="id"
+      bindtap="goToDetail"
+      data-id="{{item.id}}"
+    >
+      <view class="task-header">
+        <view class="task-no">{{item.workOrderNo}}</view>
+        <view class="tag tag-{{item.statusType}}">{{item.statusLabel}}</view>
+      </view>
+
+      <view class="task-body">
+        <view class="info-row">
+          <text class="label">产品:</text>
+          <text class="value">{{item.productName}}</text>
+        </view>
+        <view class="info-row">
+          <text class="label">工序:</text>
+          <text class="value">{{item.processName}}</text>
+        </view>
+        <view class="info-row">
+          <text class="label">进度:</text>
+          <text class="value">{{item.completedQuantity}} / {{item.planQuantity}}</text>
+        </view>
+        <view class="info-row" wx:if="{{item.unitPrice}}">
+          <text class="label">单价:</text>
+          <text class="value text-success">¥{{item.unitPrice}}/件</text>
+        </view>
+      </view>
+
+      <view class="task-progress">
+        <view class="progress-bar">
+          <view class="progress-bar-inner" style="width: {{item.progress}}%"></view>
+        </view>
+        <text class="progress-text">{{item.progress}}%</text>
+      </view>
+
+      <view class="task-footer">
+        <text class="time">{{item.createTime}}</text>
+        <view class="action-btn" catchtap="goToReport" data-id="{{item.id}}">
+          <text wx:if="{{item.status !== 'COMPLETED'}}">去报工</text>
+          <text wx:else>查看详情</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 加载中 -->
+  <view class="loading" wx:if="{{loading}}">
+    <text>加载中...</text>
+  </view>
+
+  <!-- 空状态 -->
+  <view class="empty" wx:if="{{!loading && tasks.length === 0}}">
+    <view class="empty-icon">&#xe620;</view>
+    <text class="empty-text">暂无{{statusLabels[currentStatus] || ''}}任务</text>
+  </view>
+
+  <!-- 加载更多 -->
+  <view class="load-more" wx:if="{{!loading && hasMore}}">
+    <text bindtap="loadMore">加载更多</text>
+  </view>
+</view>

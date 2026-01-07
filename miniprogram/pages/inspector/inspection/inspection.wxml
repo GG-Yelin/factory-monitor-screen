@@ -1,0 +1,120 @@
+<view class="inspection-page">
+  <!-- 工单信息 -->
+  <view class="card" wx:if="{{workOrderInfo.id}}">
+    <view class="card-title">工单信息</view>
+    <view class="info-grid">
+      <view class="info-item">
+        <view class="info-label">派工单号</view>
+        <view class="info-value">{{workOrderInfo.workOrderNo}}</view>
+      </view>
+      <view class="info-item">
+        <view class="info-label">产品名称</view>
+        <view class="info-value">{{workOrderInfo.productName}}</view>
+      </view>
+      <view class="info-item">
+        <view class="info-label">计划数量</view>
+        <view class="info-value">{{workOrderInfo.planQuantity}}</view>
+      </view>
+      <view class="info-item">
+        <view class="info-label">已完成</view>
+        <view class="info-value">{{workOrderInfo.completedQuantity}}</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 质检表单 -->
+  <view class="card" wx:if="{{workOrderInfo.id}}">
+    <view class="card-title">质检信息</view>
+
+    <view class="form-group">
+      <view class="form-label">
+        <text class="required">*</text> 检验数量
+      </view>
+      <view class="quantity-input">
+        <button class="qty-btn" bindtap="decreaseInspected">-</button>
+        <input
+          class="qty-input"
+          type="number"
+          value="{{form.inspectedQuantity}}"
+          bindinput="onInspectedInput"
+        />
+        <button class="qty-btn" bindtap="increaseInspected">+</button>
+      </view>
+    </view>
+
+    <view class="form-group">
+      <view class="form-label">
+        <text class="required">*</text> 合格数量
+      </view>
+      <view class="quantity-input">
+        <button class="qty-btn" bindtap="decreaseQualified">-</button>
+        <input
+          class="qty-input"
+          type="number"
+          value="{{form.qualifiedQuantity}}"
+          bindinput="onQualifiedInput"
+        />
+        <button class="qty-btn" bindtap="increaseQualified">+</button>
+      </view>
+    </view>
+
+    <view class="form-group">
+      <view class="form-label">不合格数量</view>
+      <view class="unqualified-display">
+        <text class="{{form.unqualifiedQuantity > 0 ? 'text-danger' : ''}}">
+          {{form.unqualifiedQuantity}} 件
+        </text>
+      </view>
+    </view>
+
+    <view class="form-group" wx:if="{{form.unqualifiedQuantity > 0}}">
+      <view class="form-label">
+        <text class="required">*</text> 不合格原因
+      </view>
+      <view class="reason-tags">
+        <view
+          class="reason-tag {{form.reason === item ? 'active' : ''}}"
+          wx:for="{{reasonOptions}}"
+          wx:key="*this"
+          bindtap="selectReason"
+          data-reason="{{item}}"
+        >{{item}}</view>
+      </view>
+      <textarea
+        class="textarea"
+        placeholder="其他原因说明"
+        value="{{form.reasonDetail}}"
+        bindinput="onReasonDetailInput"
+        maxlength="200"
+      ></textarea>
+    </view>
+
+    <view class="form-group">
+      <view class="form-label">质检照片</view>
+      <view class="image-upload">
+        <view class="image-item" wx:for="{{images}}" wx:key="index">
+          <image src="{{item}}" mode="aspectFill" />
+          <view class="image-delete" catchtap="deleteImage" data-index="{{index}}">×</view>
+        </view>
+        <view class="image-add" bindtap="chooseImage" wx:if="{{images.length < 4}}">
+          <text>+</text>
+          <text class="add-text">添加照片</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 提交按钮 -->
+  <view class="bottom-bar" wx:if="{{workOrderInfo.id}}">
+    <button class="submit-btn" bindtap="submitInspection" loading="{{submitting}}" disabled="{{submitting}}">
+      提交质检结果
+    </button>
+  </view>
+
+  <!-- 空状态 -->
+  <view class="empty-state" wx:if="{{!workOrderInfo.id && !loading}}">
+    <view class="empty-icon">&#xe621;</view>
+    <text class="empty-text">请扫描工单二维码进行质检</text>
+    <button class="scan-btn" bindtap="startScan">扫码质检</button>
+  </view>
+</view>

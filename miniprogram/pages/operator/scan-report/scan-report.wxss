@@ -1,0 +1,220 @@
+.scan-report-page {
+  min-height: 100vh;
+  background: #f5f5f5;
+  padding-bottom: 40rpx;
+}
+
+/* 扫码区域 */
+.scan-section {
+  padding: 60rpx 40rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 80vh;
+  justify-content: center;
+}
+
+.scan-area {
+  width: 400rpx;
+  height: 400rpx;
+  border: 4rpx dashed #409eff;
+  border-radius: 24rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 60rpx;
+  background: #ffffff;
+}
+
+.scan-icon {
+  font-size: 120rpx;
+  color: #409eff;
+  margin-bottom: 20rpx;
+}
+
+.scan-text {
+  font-size: 32rpx;
+  color: #303133;
+  margin-bottom: 16rpx;
+}
+
+.scan-hint {
+  font-size: 24rpx;
+  color: #909399;
+}
+
+.scan-btn {
+  width: 400rpx;
+  height: 96rpx;
+  background: #409eff;
+  color: #ffffff;
+  font-size: 32rpx;
+  border-radius: 48rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+}
+
+.scan-btn .iconfont {
+  margin-right: 16rpx;
+  font-size: 40rpx;
+}
+
+/* 报工表单 */
+.report-section {
+  padding: 20rpx;
+}
+
+.card {
+  background: #ffffff;
+  border-radius: 16rpx;
+  padding: 24rpx;
+  margin-bottom: 20rpx;
+}
+
+.card-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #303133;
+  margin-bottom: 24rpx;
+  padding-bottom: 16rpx;
+  border-bottom: 1rpx solid #ebeef5;
+}
+
+/* 信息网格 */
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20rpx;
+}
+
+.info-item {
+  padding: 12rpx 0;
+}
+
+.info-label {
+  font-size: 24rpx;
+  color: #909399;
+  margin-bottom: 8rpx;
+}
+
+.info-value {
+  font-size: 28rpx;
+  color: #303133;
+}
+
+.text-primary {
+  color: #409eff;
+  font-weight: 600;
+}
+
+/* 表单 */
+.form-group {
+  margin-bottom: 24rpx;
+}
+
+.form-label {
+  font-size: 28rpx;
+  color: #606266;
+  margin-bottom: 16rpx;
+}
+
+.required {
+  color: #f56c6c;
+  margin-right: 4rpx;
+}
+
+.input {
+  border: 2rpx solid #dcdfe6;
+  border-radius: 8rpx;
+  padding: 20rpx 24rpx;
+  font-size: 28rpx;
+  background: #f5f7fa;
+}
+
+.textarea {
+  width: 100%;
+  height: 160rpx;
+  border: 2rpx solid #dcdfe6;
+  border-radius: 8rpx;
+  padding: 20rpx 24rpx;
+  font-size: 28rpx;
+  background: #f5f7fa;
+  box-sizing: border-box;
+}
+
+/* 数量输入 */
+.quantity-input {
+  display: flex;
+  align-items: center;
+  background: #f5f7fa;
+  border-radius: 8rpx;
+  border: 2rpx solid #dcdfe6;
+  overflow: hidden;
+}
+
+.qty-btn {
+  width: 96rpx;
+  height: 80rpx;
+  background: #ffffff;
+  border: none;
+  font-size: 40rpx;
+  color: #606266;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  margin: 0;
+  line-height: 1;
+}
+
+.qty-btn:active {
+  background: #f5f7fa;
+}
+
+.qty-input {
+  flex: 1;
+  text-align: center;
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #303133;
+  border: none;
+  background: transparent;
+}
+
+/* 按钮组 */
+.button-group {
+  display: flex;
+  gap: 20rpx;
+  padding: 20rpx 0;
+}
+
+.btn-cancel {
+  flex: 1;
+  height: 88rpx;
+  background: #ffffff;
+  color: #606266;
+  font-size: 30rpx;
+  border: 2rpx solid #dcdfe6;
+  border-radius: 44rpx;
+}
+
+.btn-submit {
+  flex: 2;
+  height: 88rpx;
+  background: #409eff;
+  color: #ffffff;
+  font-size: 30rpx;
+  border: none;
+  border-radius: 44rpx;
+}
+
+.btn-submit:active {
+  background: #337ecc;
+}
+
+.btn-submit[disabled] {
+  background: #a0cfff;
+}

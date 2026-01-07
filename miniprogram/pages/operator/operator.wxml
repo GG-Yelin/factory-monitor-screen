@@ -1,0 +1,104 @@
+<view class="operator-page">
+  <!-- 用户信息头部 -->
+  <view class="header-card">
+    <view class="user-info">
+      <view class="avatar">
+        <text>{{userInfo.name ? userInfo.name[0] : 'U'}}</text>
+      </view>
+      <view class="user-detail">
+        <view class="user-name">{{userInfo.name || '未登录'}}</view>
+        <view class="user-meta">
+          <text class="employee-no">工号: {{userInfo.employeeNo || '-'}}</text>
+          <text class="team-name" wx:if="{{userInfo.teamName}}">{{userInfo.teamName}}</text>
+        </view>
+      </view>
+    </view>
+    <view class="header-stats">
+      <view class="stat-item">
+        <view class="stat-value">{{todayStats.completedCount || 0}}</view>
+        <view class="stat-label">今日完成</view>
+      </view>
+      <view class="stat-item">
+        <view class="stat-value">{{todayStats.totalQuantity || 0}}</view>
+        <view class="stat-label">完成数量</view>
+      </view>
+      <view class="stat-item">
+        <view class="stat-value">{{todayStats.wage || '0.00'}}</view>
+        <view class="stat-label">今日工资</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 快捷操作 -->
+  <view class="card">
+    <view class="card-title">快捷操作</view>
+    <view class="action-grid">
+      <view class="action-item" bindtap="goToScanReport">
+        <view class="action-icon scan-icon">
+          <text>&#xe619;</text>
+        </view>
+        <view class="action-text">扫码报工</view>
+      </view>
+      <view class="action-item" bindtap="goToTasks">
+        <view class="action-icon task-icon">
+          <text>&#xe61a;</text>
+        </view>
+        <view class="action-text">我的任务</view>
+      </view>
+      <view class="action-item" bindtap="goToWage">
+        <view class="action-icon wage-icon">
+          <text>&#xe61b;</text>
+        </view>
+        <view class="action-text">我的工资</view>
+      </view>
+      <view class="action-item" bindtap="goToProfile">
+        <view class="action-icon profile-icon">
+          <text>&#xe61c;</text>
+        </view>
+        <view class="action-text">个人中心</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 进行中的任务 -->
+  <view class="card">
+    <view class="card-header">
+      <view class="card-title">进行中的任务</view>
+      <view class="card-more" bindtap="goToTasks">查看全部 ></view>
+    </view>
+
+    <view wx:if="{{loading}}" class="loading">
+      <text>加载中...</text>
+    </view>
+
+    <view wx:elif="{{tasks.length === 0}}" class="empty">
+      <text class="empty-text">暂无进行中的任务</text>
+    </view>
+
+    <view wx:else class="task-list">
+      <view class="task-item" wx:for="{{tasks}}" wx:key="id" bindtap="goToTaskDetail" data-id="{{item.id}}">
+        <view class="task-header">
+          <text class="task-no">{{item.workOrderNo}}</text>
+          <text class="tag tag-{{item.statusType}}">{{item.statusLabel}}</text>
+        </view>
+        <view class="task-info">
+          <view class="info-row">
+            <text class="label">产品:</text>
+            <text class="value">{{item.productName}}</text>
+          </view>
+          <view class="info-row">
+            <text class="label">工序:</text>
+            <text class="value">{{item.processName}}</text>
+          </view>
+          <view class="info-row">
+            <text class="label">进度:</text>
+            <text class="value">{{item.completedQuantity}} / {{item.planQuantity}}</text>
+          </view>
+        </view>
+        <view class="progress-bar">
+          <view class="progress-bar-inner" style="width: {{item.progress}}%"></view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

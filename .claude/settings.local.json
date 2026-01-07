@@ -12,7 +12,10 @@
       "Bash(python3 -c \"\nimport json, sys\ndata = json.load\\(sys.stdin\\)\nfor dp in data:\n    if ''''生产计划数'''' in dp.get\\(''''name'''', ''''''''\\):\n        print\\(f\"\"name: ''''{dp[''''name'''']}''''  value: ''''{dp.get\\(''''value'''', ''''''''\\)}''''  hex: {dp[''''name''''].encode\\(''''utf-8''''\\).hex\\(\\)}\"\" \\)\n        break\n\")",
       "Bash(find /Users/wangyu/factory-monitor-screen/frontend/src -name *.css -o -name *.scss -o -name style*)",
       "Bash(mvn compile -q)",
-      "Bash(./mvnw compile -q)"
+      "Bash(./mvnw compile -q)",
+      "Bash(python3 -c \"\nfrom pypdf import PdfReader\nreader = PdfReader\\(''/Users/wangyubj15/factory/factory-monitor-screen/小工单需求分析.pdf''\\)\nfor i, page in enumerate\\(reader.pages\\):\n    text = page.extract_text\\(\\) or ''''\n    print\\(f''=== Page {i + 1} ===''\\)\n    print\\(text\\)\n    print\\(''\\\\n''\\)\n\")",
+      "Bash(/Library/Developer/CommandLineTools/usr/bin/python3 -m pip install pypdf -q)",
+      "Bash(/Library/Developer/CommandLineTools/usr/bin/python3 -c \"\nfrom pypdf import PdfReader\nreader = PdfReader\\(''/Users/wangyubj15/factory/factory-monitor-screen/小工单需求分析.pdf''\\)\nfor i, page in enumerate\\(reader.pages\\):\n    text = page.extract_text\\(\\) or ''''\n    print\\(f''=== Page {i + 1} ===''\\)\n    print\\(text\\)\n    print\\(''\\\\n''\\)\n\")"
     ]
   }
 }
