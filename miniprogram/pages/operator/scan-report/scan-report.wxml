@@ -1,0 +1,112 @@
+<view class="scan-report-page">
+  <!-- 扫码区域 -->
+  <view class="scan-section" wx:if="{{!scanned}}">
+    <view class="scan-area" bindtap="startScan">
+      <view class="scan-icon">
+        <text class="iconfont">&#xe619;</text>
+      </view>
+      <view class="scan-text">点击扫描工序二维码</view>
+      <view class="scan-hint">请对准派工单上的工序二维码</view>
+    </view>
+    <button class="scan-btn" bindtap="startScan">
+      <text class="iconfont">&#xe619;</text>
+      开始扫码
+    </button>
+  </view>
+
+  <!-- 报工表单 -->
+  <view class="report-section" wx:if="{{scanned}}">
+    <view class="card">
+      <view class="card-title">工序信息</view>
+      <view class="info-grid">
+        <view class="info-item">
+          <view class="info-label">派工单号</view>
+          <view class="info-value">{{processInfo.workOrderNo}}</view>
+        </view>
+        <view class="info-item">
+          <view class="info-label">产品名称</view>
+          <view class="info-value">{{processInfo.productName}}</view>
+        </view>
+        <view class="info-item">
+          <view class="info-label">工序名称</view>
+          <view class="info-value">{{processInfo.processName}}</view>
+        </view>
+        <view class="info-item">
+          <view class="info-label">计划数量</view>
+          <view class="info-value">{{processInfo.planQuantity}}</view>
+        </view>
+        <view class="info-item">
+          <view class="info-label">已完成</view>
+          <view class="info-value">{{processInfo.completedQuantity}}</view>
+        </view>
+        <view class="info-item">
+          <view class="info-label">待完成</view>
+          <view class="info-value text-primary">{{processInfo.remainingQuantity}}</view>
+        </view>
+      </view>
+    </view>
+
+    <view class="card">
+      <view class="card-title">报工信息</view>
+
+      <view class="form-group">
+        <view class="form-label">
+          <text class="required">*</text> 完成数量
+        </view>
+        <view class="quantity-input">
+          <button class="qty-btn" bindtap="decreaseQuantity">-</button>
+          <input
+            class="qty-input"
+            type="number"
+            value="{{reportForm.completedQuantity}}"
+            bindinput="onQuantityInput"
+          />
+          <button class="qty-btn" bindtap="increaseQuantity">+</button>
+        </view>
+      </view>
+
+      <view class="form-group">
+        <view class="form-label">报废数量</view>
+        <view class="quantity-input">
+          <button class="qty-btn" bindtap="decreaseScrap">-</button>
+          <input
+            class="qty-input"
+            type="number"
+            value="{{reportForm.scrapQuantity}}"
+            bindinput="onScrapInput"
+          />
+          <button class="qty-btn" bindtap="increaseScrap">+</button>
+        </view>
+      </view>
+
+      <view class="form-group">
+        <view class="form-label">工时(分钟)</view>
+        <input
+          class="input"
+          type="number"
+          placeholder="请输入实际工时"
+          value="{{reportForm.workHours}}"
+          bindinput="onWorkHoursInput"
+        />
+      </view>
+
+      <view class="form-group">
+        <view class="form-label">备注</view>
+        <textarea
+          class="textarea"
+          placeholder="请输入备注信息(选填)"
+          value="{{reportForm.remark}}"
+          bindinput="onRemarkInput"
+          maxlength="200"
+        ></textarea>
+      </view>
+    </view>
+
+    <view class="button-group">
+      <button class="btn-cancel" bindtap="resetScan">重新扫码</button>
+      <button class="btn-submit" bindtap="submitReport" loading="{{submitting}}" disabled="{{submitting}}">
+        提交报工
+      </button>
+    </view>
+  </view>
+</view>

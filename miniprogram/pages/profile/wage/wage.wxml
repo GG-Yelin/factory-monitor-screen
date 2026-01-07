@@ -1,0 +1,78 @@
+<view class="wage-page">
+  <!-- 时间筛选 -->
+  <view class="filter-bar">
+    <view
+      class="filter-item {{currentPeriod === 'day' ? 'active' : ''}}"
+      bindtap="changePeriod"
+      data-period="day"
+    >今日</view>
+    <view
+      class="filter-item {{currentPeriod === 'week' ? 'active' : ''}}"
+      bindtap="changePeriod"
+      data-period="week"
+    >本周</view>
+    <view
+      class="filter-item {{currentPeriod === 'month' ? 'active' : ''}}"
+      bindtap="changePeriod"
+      data-period="month"
+    >本月</view>
+    <view
+      class="filter-item {{currentPeriod === 'custom' ? 'active' : ''}}"
+      bindtap="showDatePicker"
+    >自定义</view>
+  </view>
+
+  <!-- 汇总统计 -->
+  <view class="summary-card">
+    <view class="summary-main">
+      <view class="summary-label">{{periodLabel}}工资(元)</view>
+      <view class="summary-value">{{summary.totalAmount}}</view>
+    </view>
+    <view class="summary-detail">
+      <view class="detail-item">
+        <view class="detail-value">{{summary.totalQuantity}}</view>
+        <view class="detail-label">完成数量</view>
+      </view>
+      <view class="detail-divider"></view>
+      <view class="detail-item">
+        <view class="detail-value">{{summary.recordCount}}</view>
+        <view class="detail-label">报工次数</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 明细列表 -->
+  <view class="list-section">
+    <view class="section-title">工资明细</view>
+
+    <view wx:if="{{loading}}" class="loading">
+      <text>加载中...</text>
+    </view>
+
+    <view wx:elif="{{records.length === 0}}" class="empty">
+      <text class="empty-text">暂无工资记录</text>
+    </view>
+
+    <view wx:else class="record-list">
+      <view class="record-item" wx:for="{{records}}" wx:key="id">
+        <view class="record-header">
+          <text class="record-date">{{item.workDate}}</text>
+          <text class="record-amount">+¥{{item.amount}}</text>
+        </view>
+        <view class="record-body">
+          <view class="record-info">
+            <text class="product-name">{{item.productName}}</text>
+            <text class="process-name">{{item.processName}}</text>
+          </view>
+          <view class="record-qty">
+            <text>{{item.completedQuantity}}件 × ¥{{item.unitPrice}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="load-more" wx:if="{{!loading && hasMore}}" bindtap="loadMore">
+      <text>加载更多</text>
+    </view>
+  </view>
+</view>

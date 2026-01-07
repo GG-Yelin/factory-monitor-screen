@@ -1,0 +1,50 @@
+<view class="login-container">
+  <view class="logo-section">
+    <view class="logo">MES</view>
+    <view class="title">生产执行系统</view>
+    <view class="subtitle">员工端</view>
+  </view>
+
+  <view class="form-section">
+    <view class="input-group">
+      <view class="input-icon">
+        <text class="iconfont">&#xe615;</text>
+      </view>
+      <input
+        class="input"
+        placeholder="请输入工号/手机号"
+        value="{{username}}"
+        bindinput="onUsernameInput"
+      />
+    </view>
+
+    <view class="input-group">
+      <view class="input-icon">
+        <text class="iconfont">&#xe616;</text>
+      </view>
+      <input
+        class="input"
+        placeholder="请输入密码"
+        password="{{!showPassword}}"
+        value="{{password}}"
+        bindinput="onPasswordInput"
+      />
+      <view class="input-suffix" bindtap="togglePassword">
+        <text class="iconfont">{{showPassword ? '&#xe617;' : '&#xe618;'}}</text>
+      </view>
+    </view>
+
+    <view class="remember-row">
+      <switch checked="{{rememberMe}}" bindchange="onRememberChange" color="#409eff" />
+      <text>记住账号</text>
+    </view>
+
+    <button class="login-btn" bindtap="handleLogin" loading="{{loading}}" disabled="{{loading}}">
+      登 录
+    </button>
+  </view>
+
+  <view class="footer">
+    <text class="text-muted">版本 1.0.0</text>
+  </view>
+</view>

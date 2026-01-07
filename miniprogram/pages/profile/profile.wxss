@@ -1,0 +1,136 @@
+.profile-page {
+  min-height: 100vh;
+  background: #f5f5f5;
+  padding-bottom: 120rpx;
+}
+
+/* 用户卡片 */
+.user-card {
+  display: flex;
+  align-items: center;
+  background: linear-gradient(135deg, #409eff, #66b1ff);
+  padding: 40rpx;
+  color: #ffffff;
+}
+
+.avatar {
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 52rpx;
+  font-weight: bold;
+  margin-right: 30rpx;
+}
+
+.user-info {
+  flex: 1;
+}
+
+.user-name {
+  font-size: 40rpx;
+  font-weight: 600;
+  margin-bottom: 12rpx;
+}
+
+.user-meta {
+  font-size: 26rpx;
+  opacity: 0.9;
+  margin-bottom: 12rpx;
+}
+
+.user-tags {
+  display: flex;
+  gap: 12rpx;
+  flex-wrap: wrap;
+}
+
+.tag {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 6rpx 16rpx;
+  border-radius: 20rpx;
+  font-size: 22rpx;
+}
+
+/* 菜单区域 */
+.menu-section {
+  background: #ffffff;
+  margin: 20rpx;
+  border-radius: 16rpx;
+  overflow: hidden;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  padding: 28rpx 24rpx;
+  border-bottom: 1rpx solid #f5f5f5;
+}
+
+.menu-item:last-child {
+  border-bottom: none;
+}
+
+.menu-item:active {
+  background: #f5f7fa;
+}
+
+.menu-icon {
+  width: 72rpx;
+  height: 72rpx;
+  border-radius: 16rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36rpx;
+  margin-right: 20rpx;
+}
+
+.wage-icon { background: #e8f8e8; color: #67c23a; }
+.guide-icon { background: #fef0e6; color: #e6a23c; }
+.settings-icon { background: #e8f4ff; color: #409eff; }
+.about-icon { background: #f4f4f5; color: #909399; }
+
+.menu-text {
+  flex: 1;
+  font-size: 30rpx;
+  color: #303133;
+}
+
+.menu-arrow {
+  font-size: 28rpx;
+  color: #c0c4cc;
+}
+
+/* 退出登录 */
+.logout-section {
+  margin: 40rpx 20rpx;
+}
+
+.logout-btn {
+  width: 100%;
+  height: 88rpx;
+  background: #ffffff;
+  color: #f56c6c;
+  font-size: 30rpx;
+  border-radius: 16rpx;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logout-btn:active {
+  background: #fef0f0;
+}
+
+/* 版本信息 */
+.version-info {
+  text-align: center;
+  padding: 40rpx;
+  color: #c0c4cc;
+  font-size: 24rpx;
+}

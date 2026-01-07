@@ -1,0 +1,62 @@
+<view class="settings-page">
+  <!-- 账号信息 -->
+  <view class="section">
+    <view class="section-title">账号信息</view>
+    <view class="info-list">
+      <view class="info-item">
+        <text class="label">姓名</text>
+        <text class="value">{{userInfo.name || '-'}}</text>
+      </view>
+      <view class="info-item">
+        <text class="label">工号</text>
+        <text class="value">{{userInfo.employeeNo || '-'}}</text>
+      </view>
+      <view class="info-item">
+        <text class="label">手机号</text>
+        <text class="value">{{userInfo.phone || '-'}}</text>
+      </view>
+      <view class="info-item">
+        <text class="label">班组</text>
+        <text class="value">{{userInfo.teamName || '-'}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 修改密码 -->
+  <view class="section">
+    <view class="section-title">修改密码</view>
+    <view class="form-group">
+      <view class="form-label">当前密码</view>
+      <input
+        class="input"
+        type="password"
+        placeholder="请输入当前密码"
+        value="{{passwordForm.oldPassword}}"
+        bindinput="onOldPasswordInput"
+      />
+    </view>
+    <view class="form-group">
+      <view class="form-label">新密码</view>
+      <input
+        class="input"
+        type="password"
+        placeholder="请输入新密码（至少6位）"
+        value="{{passwordForm.newPassword}}"
+        bindinput="onNewPasswordInput"
+      />
+    </view>
+    <view class="form-group">
+      <view class="form-label">确认新密码</view>
+      <input
+        class="input"
+        type="password"
+        placeholder="请再次输入新密码"
+        value="{{passwordForm.confirmPassword}}"
+        bindinput="onConfirmPasswordInput"
+      />
+    </view>
+    <button class="submit-btn" bindtap="changePassword" loading="{{submitting}}" disabled="{{submitting}}">
+      确认修改
+    </button>
+  </view>
+</view>

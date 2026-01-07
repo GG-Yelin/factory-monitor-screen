@@ -1,0 +1,50 @@
+{
+  "pages": [
+    "pages/login/login",
+    "pages/operator/operator",
+    "pages/operator/scan-report/scan-report",
+    "pages/inspector/inspector",
+    "pages/inspector/inspection/inspection",
+    "pages/tasks/tasks",
+    "pages/tasks/detail/detail",
+    "pages/profile/profile",
+    "pages/profile/wage/wage",
+    "pages/profile/settings/settings"
+  ],
+  "window": {
+    "navigationBarBackgroundColor": "#409eff",
+    "navigationBarTitleText": "MES生产系统",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#f5f5f5",
+    "backgroundTextStyle": "dark"
+  },
+  "tabBar": {
+    "color": "#999999",
+    "selectedColor": "#409eff",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/operator/operator",
+        "text": "首页",
+        "iconPath": "images/home.png",
+        "selectedIconPath": "images/home-active.png"
+      },
+      {
+        "pagePath": "pages/tasks/tasks",
+        "text": "我的任务",
+        "iconPath": "images/task.png",
+        "selectedIconPath": "images/task-active.png"
+      },
+      {
+        "pagePath": "pages/profile/profile",
+        "text": "我的",
+        "iconPath": "images/profile.png",
+        "selectedIconPath": "images/profile-active.png"
+      }
+    ]
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents"
+}

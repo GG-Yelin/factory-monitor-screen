@@ -1,0 +1,87 @@
+<view class="detail-page">
+  <view class="card" wx:if="{{taskInfo.id}}">
+    <view class="card-header">
+      <view class="task-no">{{taskInfo.workOrderNo}}</view>
+      <view class="tag tag-{{taskInfo.statusType}}">{{taskInfo.statusLabel}}</view>
+    </view>
+
+    <view class="info-section">
+      <view class="info-item">
+        <view class="info-label">产品名称</view>
+        <view class="info-value">{{taskInfo.productName}}</view>
+      </view>
+      <view class="info-item">
+        <view class="info-label">工序名称</view>
+        <view class="info-value">{{taskInfo.processName}}</view>
+      </view>
+      <view class="info-item">
+        <view class="info-label">计划数量</view>
+        <view class="info-value">{{taskInfo.planQuantity}}</view>
+      </view>
+      <view class="info-item">
+        <view class="info-label">已完成</view>
+        <view class="info-value text-success">{{taskInfo.completedQuantity}}</view>
+      </view>
+      <view class="info-item">
+        <view class="info-label">待完成</view>
+        <view class="info-value text-primary">{{taskInfo.remainingQuantity}}</view>
+      </view>
+      <view class="info-item">
+        <view class="info-label">计件单价</view>
+        <view class="info-value text-success">¥{{taskInfo.unitPrice || 0}}/件</view>
+      </view>
+    </view>
+
+    <view class="progress-section">
+      <view class="progress-header">
+        <text>完成进度</text>
+        <text class="progress-percent">{{taskInfo.progress}}%</text>
+      </view>
+      <view class="progress-bar">
+        <view class="progress-bar-inner" style="width: {{taskInfo.progress}}%"></view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 报工记录 -->
+  <view class="card">
+    <view class="card-title">报工记录</view>
+
+    <view wx:if="{{reports.length === 0}}" class="empty-tip">
+      <text>暂无报工记录</text>
+    </view>
+
+    <view wx:else class="report-list">
+      <view class="report-item" wx:for="{{reports}}" wx:key="id">
+        <view class="report-header">
+          <text class="report-time">{{item.reportTime}}</text>
+          <text class="report-amount text-success">+¥{{item.amount}}</text>
+        </view>
+        <view class="report-body">
+          <view class="report-info">
+            <text class="label">完成:</text>
+            <text class="value">{{item.completedQuantity}}件</text>
+          </view>
+          <view class="report-info" wx:if="{{item.scrapQuantity > 0}}">
+            <text class="label">报废:</text>
+            <text class="value text-danger">{{item.scrapQuantity}}件</text>
+          </view>
+          <view class="report-info" wx:if="{{item.workHours > 0}}">
+            <text class="label">工时:</text>
+            <text class="value">{{item.workHours}}分钟</text>
+          </view>
+        </view>
+        <view class="report-remark" wx:if="{{item.remark}}">
+          <text>备注: {{item.remark}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 底部按钮 -->
+  <view class="bottom-bar" wx:if="{{taskInfo.status !== 'COMPLETED'}}">
+    <button class="report-btn" bindtap="goToReport">
+      去报工
+    </button>
+  </view>
+</view>
